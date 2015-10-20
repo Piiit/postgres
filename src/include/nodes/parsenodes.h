@@ -122,6 +122,7 @@ typedef struct Query
 	bool		hasModifyingCTE;	/* has INSERT/UPDATE/DELETE in WITH */
 	bool		hasForUpdate;	/* FOR [KEY] UPDATE/SHARE was specified */
 	bool		hasRowSecurity; /* row security applied? */
+	bool		twice;			/* Do you want every result tuple twice? */
 
 	List	   *cteList;		/* WITH list (of CommonTableExpr's) */
 
@@ -1312,6 +1313,7 @@ typedef struct SelectStmt
 	 */
 	SetOperation op;			/* type of set op */
 	bool		all;			/* ALL specified? */
+	bool		twice;			/* Do you want every result tuple twice? */
 	struct SelectStmt *larg;	/* left child */
 	struct SelectStmt *rarg;	/* right child */
 	/* Eventually add fields for CORRESPONDING spec here */

@@ -537,6 +537,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 				opt_frame_clause frame_extent frame_bound
 %type <str>		opt_existing_window_name
 %type <boolean> opt_if_not_exists
+%type <boolean> opt_twice_clause
 
 /*
  * Non-keyword token types.  These are hard-wired into the "flex" lexer.
@@ -632,7 +633,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 
 	TABLE TABLES TABLESAMPLE TABLESPACE TEMP TEMPLATE TEMPORARY TEXT_P THEN
 	TIME TIMESTAMP TO TRAILING TRANSACTION TRANSFORM TREAT TRIGGER TRIM TRUE_P
-	TRUNCATE TRUSTED TYPE_P TYPES_P
+	TRUNCATE TRUSTED TWICE TYPE_P TYPES_P
 
 	UNBOUNDED UNCOMMITTED UNENCRYPTED UNION UNIQUE UNKNOWN UNLISTEN UNLOGGED
 	UNTIL UPDATE USER USING
@@ -10044,18 +10045,19 @@ select_clause:
  * However, this is not checked by the grammar; parse analysis must check it.
  */
 simple_select:
-			SELECT opt_all_clause opt_target_list
+			SELECT opt_all_clause opt_twice_clause opt_target_list
 			into_clause from_clause where_clause
 			group_clause having_clause window_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
-					n->targetList = $3;
-					n->intoClause = $4;
-					n->fromClause = $5;
-					n->whereClause = $6;
-					n->groupClause = $7;
-					n->havingClause = $8;
-					n->windowClause = $9;
+					n->twice = $3; 
+					n->targetList = $4;
+					n->intoClause = $5;
+					n->fromClause = $6;
+					n->whereClause = $7;
+					n->groupClause = $8;
+					n->havingClause = $9;
+					n->windowClause = $10;
 					$$ = (Node *)n;
 				}
 			| SELECT distinct_clause target_list
@@ -10245,6 +10247,10 @@ all_or_distinct:
 			| DISTINCT								{ $$ = FALSE; }
 			| /*EMPTY*/								{ $$ = FALSE; }
 		;
+		
+opt_twice_clause:
+			TWICE									{ $$ = TRUE; }
+			| /*EMPTY*/								{ $$ = FALSE; }
 
 /* We use (NIL) as a placeholder to indicate that all target expressions
  * should be placed in the DISTINCT list during parsetree analysis.
@@ -14088,6 +14094,7 @@ reserved_keyword:
 			| TO
 			| TRAILING
 			| TRUE_P
+			| TWICE
 			| UNION
 			| UNIQUE
 			| USER

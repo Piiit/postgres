@@ -1081,6 +1081,8 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
 	/* make WINDOW info available for window functions, too */
 	pstate->p_windowdefs = stmt->windowClause;
 
+	qry->twice = stmt->twice;
+
 	/* process the FROM clause */
 	transformFromClause(pstate, stmt->fromClause);
 
