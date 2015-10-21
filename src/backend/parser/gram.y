@@ -10050,7 +10050,7 @@ simple_select:
 			group_clause having_clause window_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
-					n->twice = $3; 
+					n->twice = $3;
 					n->targetList = $4;
 					n->intoClause = $5;
 					n->fromClause = $6;
@@ -10247,7 +10247,7 @@ all_or_distinct:
 			| DISTINCT								{ $$ = FALSE; }
 			| /*EMPTY*/								{ $$ = FALSE; }
 		;
-		
+
 opt_twice_clause:
 			TWICE									{ $$ = TRUE; }
 			| /*EMPTY*/								{ $$ = FALSE; }
