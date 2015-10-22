@@ -2358,6 +2358,14 @@ grouping_planner(PlannerInfo *root, double tuple_fraction)
 	}
 
 	/*
+	 * If there is a TWICE clause, add the necessary node. We add this after
+	 * the distinct node handling.
+	 */
+	if (parse->twice) {
+		result_plan = (Plan *) make_twice(result_plan);
+	}
+
+	/*
 	 * If ORDER BY was given and we were not able to make the plan come out in
 	 * the right order, add an explicit sort step.
 	 */

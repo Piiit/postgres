@@ -4714,6 +4714,29 @@ make_group(PlannerInfo *root,
 	return node;
 }
 
+Twice *
+make_twice(Plan *lefttree)
+{
+	Twice	   *node = makeNode(Twice);
+	Plan	   *plan = &node->plan;
+
+	copy_plan_costsize(plan, lefttree);
+
+	/*
+	 * Charge a cpu_tuple_cost for every tuple on input, multiplied with 2,
+	 * since we output every tuple twice.
+	 */
+	plan->plan_rows *= 2;
+	plan->total_cost += cpu_tuple_cost * plan->plan_rows;
+
+	plan->targetlist = lefttree->targetlist;
+	plan->qual = NIL;
+	plan->lefttree = lefttree;
+	plan->righttree = NULL;
+
+	return node;
+}
+
 /*
  * distinctList is a list of SortGroupClauses, identifying the targetlist items
  * that should be considered by the Unique filter.  The input path must

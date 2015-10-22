@@ -74,6 +74,7 @@ extern Group *make_group(PlannerInfo *root, List *tlist, List *qual,
 		   Plan *lefttree);
 extern Plan *materialize_finished_plan(Plan *subplan);
 extern Unique *make_unique(Plan *lefttree, List *distinctList);
+extern Twice *make_twice(Plan *lefttree);
 extern LockRows *make_lockrows(Plan *lefttree, List *rowMarks, int epqParam);
 extern Limit *make_limit(Plan *lefttree, Node *limitOffset, Node *limitCount,
 		   int64 offset_est, int64 count_est);

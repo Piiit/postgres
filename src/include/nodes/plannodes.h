@@ -759,6 +759,11 @@ typedef struct Unique
 	Oid		   *uniqOperators;	/* equality operators to compare with */
 } Unique;
 
+typedef struct Twice
+{
+	Plan plan;
+} Twice;
+
 /* ------------
  *		gather node
  * ------------

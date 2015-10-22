@@ -75,6 +75,7 @@ typedef enum NodeTag
 	T_WindowAgg,
 	T_Unique,
 	T_Gather,
+	T_Twice,
 	T_Hash,
 	T_SetOp,
 	T_LockRows,
