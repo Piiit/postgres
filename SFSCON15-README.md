@@ -85,8 +85,8 @@ Second, we must start the server:
 		./server/bin/pg_ctl -D ~/projects/postgresql-sfscon/data \
 		-l logfile start -o "-p 5555"
     
-This command starts the server with the cluster stored in `.../data`, a logfile
-stored in the current directory, and with a server port set to 5555 (since we 
+This command starts the server with the cluster stored in `~/projects/postgresql-sfscon/data`, a logfile
+stored in the current directory, and with a server port set to `5555` (since we 
 do not want to interfer with already running instances of PostgreSQL).
 
 Third, we create a new database named `A`: 
