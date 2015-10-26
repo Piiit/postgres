@@ -815,6 +815,13 @@ _outUnique(StringInfo str, const Unique *node)
 }
 
 static void
+_outTwice(StringInfo str, const Twice *node)
+{
+	WRITE_NODE_TYPE("TWICE");
+	_outPlanInfo(str, (const Plan *) node);
+}
+
+static void
 _outHash(StringInfo str, const Hash *node)
 {
 	WRITE_NODE_TYPE("HASH");
@@ -2218,6 +2225,7 @@ _outSelectStmt(StringInfo str, const SelectStmt *node)
 	WRITE_NODE_FIELD(withClause);
 	WRITE_ENUM_FIELD(op, SetOperation);
 	WRITE_BOOL_FIELD(all);
+	WRITE_BOOL_FIELD(twice);
 	WRITE_NODE_FIELD(larg);
 	WRITE_NODE_FIELD(rarg);
 }
@@ -2394,6 +2402,7 @@ _outQuery(StringInfo str, const Query *node)
 	WRITE_BOOL_FIELD(hasModifyingCTE);
 	WRITE_BOOL_FIELD(hasForUpdate);
 	WRITE_BOOL_FIELD(hasRowSecurity);
+	WRITE_BOOL_FIELD(twice);
 	WRITE_NODE_FIELD(cteList);
 	WRITE_NODE_FIELD(rtable);
 	WRITE_NODE_FIELD(jointree);
@@ -3485,6 +3494,9 @@ _outNode(StringInfo str, const void *obj)
 				break;
 			case T_XmlSerialize:
 				_outXmlSerialize(str, obj);
+				break;
+			case T_Twice:
+				_outTwice(str, obj);
 				break;
 
 			default:

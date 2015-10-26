@@ -10251,6 +10251,7 @@ all_or_distinct:
 opt_twice_clause:
 			TWICE									{ $$ = TRUE; }
 			| /*EMPTY*/								{ $$ = FALSE; }
+		;
 
 /* We use (NIL) as a placeholder to indicate that all target expressions
  * should be placed in the DISTINCT list during parsetree analysis.

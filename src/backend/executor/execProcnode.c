@@ -111,6 +111,7 @@
 #include "executor/nodeSubqueryscan.h"
 #include "executor/nodeTidscan.h"
 #include "executor/nodeUnique.h"
+#include "executor/nodeTwice.h"
 #include "executor/nodeValuesscan.h"
 #include "executor/nodeWindowAgg.h"
 #include "executor/nodeWorktablescan.h"
@@ -334,6 +335,11 @@ ExecInitNode(Plan *node, EState *estate, int eflags)
 												 estate, eflags);
 			break;
 
+		case T_Twice:
+			result = (PlanState *) ExecInitTwice((Twice *)node,
+												 estate, eflags);
+			break;
+
 		default:
 			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
 			result = NULL;		/* keep compiler quiet */
@@ -529,6 +535,10 @@ ExecProcNode(PlanState *node)
 
 		case T_LimitState:
 			result = ExecLimit((LimitState *) node);
+			break;
+
+		case T_TwiceState:
+			result = ExecTwice((TwiceState *) node);
 			break;
 
 		default:
@@ -777,6 +787,10 @@ ExecEndNode(PlanState *node)
 
 		case T_LimitState:
 			ExecEndLimit((LimitState *) node);
+			break;
+
+		case T_TwiceState:
+			ExecEndTwice((TwiceState *) node);
 			break;
 
 		default:

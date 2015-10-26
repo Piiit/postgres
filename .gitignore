@@ -38,3 +38,10 @@ lib*.pc
 /Debug/
 /Release/
 /tmp_install/
+
+# SFSCON patch example excludes
+/server/
+/data/
+.cproject
+.project
+logfile

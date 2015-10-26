@@ -1027,11 +1027,23 @@ exec_simple_query(const char *query_string)
 		 */
 		oldcontext = MemoryContextSwitchTo(MessageContext);
 
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PARSETREE START\n\n");
+		pprint(parsetree);
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PARSETREE END\n\n");
+
 		querytree_list = pg_analyze_and_rewrite(parsetree, query_string,
 												NULL, 0);
 
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> QUERYTREE START\n\n");
+		pprint(querytree_list);
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> QUERYTREE END\n\n");
+
 		plantree_list = pg_plan_queries(querytree_list,
 										CURSOR_OPT_PARALLEL_OK, NULL);
+
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PLANTREE START\n\n");
+		pprint(plantree_list);
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PLANTREE END\n\n");
 
 		/* Done with the snapshot used for parsing/planning */
 		if (snapshot_set)

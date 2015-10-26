@@ -1951,6 +1951,12 @@ typedef struct UniqueState
 	MemoryContext tempContext;	/* short-term context for comparisons */
 } UniqueState;
 
+typedef struct TwiceState
+{
+	PlanState ps;
+	bool isFirst;
+} TwiceState;
+
 /* ----------------
  * GatherState information
  *
