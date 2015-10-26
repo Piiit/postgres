@@ -253,9 +253,9 @@ the given value to the query tree.
 
 So, lets run `make` and `make install` to see if everything works well.
 
-However, when we like to test it, `psql` may give an error. This is, the 
-database cluster an old configuration of the grammar, hence we must delete and
-rebuild it.
+However, when we like to test it, `psql` may give an error. This is, the
+because the database cluster was created with an old configuration of the
+grammar, hence we must delete and rebuild it.
 
 		./server/bin/pg_ctl -D data/ -o "-p 5555" -l logfile stop
 		rm -rf data/
@@ -267,8 +267,8 @@ Now, we can test the new grammar:
 		./server/bin/createdb -p 5555 A
 		./server/bin/psql -p 5555 -d A
     
-We do not want to create new tables all the time, therefore we can just use a
-`VALUES` clause to create a temporary "table" `T`.
+If you do not want to create new tables all the time, you could use a `VALUES`
+clause to test the `TWICE` clause.
 
 		SELECT TWICE * FROM (VALUES(1),(2)) T;
 		column1 
@@ -278,10 +278,10 @@ We do not want to create new tables all the time, therefore we can just use a
 		(2 rows)
 
 The output above tells us, that the parser accepts the grammar, but the executor
-does not duplicate the values. 
+does not duplicate the rows.
 
-In order to see how the parsetree looks internally we can use the function
-`pprint` (i.e., pretty-print) that takes PostgreSQL nodes as input and
+In order to see how the parsetree looks internally, we can use the function
+`pprint` (i.e., pretty-print), that takes PostgreSQL nodes as input and
 creates a nicely intended tree of its contents. A good place to add this
 function call is the entry point of PostgreSQL query handler, namely
 `src/backend/tcop/postgres.c`. Search for `pg_analyze_and_rewrite` inside
@@ -293,7 +293,7 @@ function call is the entry point of PostgreSQL query handler, namely
 
 NB: `pg_analyze_and_rewrite` performs parse analysis and rule rewriting, given a 
 raw parsetree (gram.y output), and optionally information about types of 
-parameter symbols ($n).
+parameter symbols ($n). 
 
 The output written to the `logfile` (if configured) for the query 
 
@@ -349,11 +349,9 @@ is something like this:
 
 		>>>>>>>>>>>>>>>>>>>>>>>> PARSETREE END
 	   
-NB: As you may have noticed, there is no `twice` field shown. This is,
-because we have not added the `twice` field to the output routines. I will
-not describe this here, but you should simply have a look at `` and see how
-other fields were added.
-
+NB: You may notice that there is no `twice` field shown. This is due the fact, 
+that we have not defined an output rule for it yet. Please refer to the last 
+chapter to see how it is solved.
 
 
 ### Second phase: The Optimizer/Planner
