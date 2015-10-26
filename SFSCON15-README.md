@@ -14,7 +14,7 @@ SFSCON: POSTGRESQL DEVELOPMENT TALK
 * Some understanding of **git** (or other version control systems) 
 * **GNU Autoconf** tools and **C compiler** handling (i.e., gcc, configure, ...)
 * **PostgreSQL** usage (ex., querying, DDL, ...)
-* Not necessary, but useful: [PG Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ).
+* Useful source for developers (not necessary for this tutorial): [PG Developer FAQ](https://wiki.postgresql.org/wiki/Developer_FAQ).
 
 ## Getting the source
 
