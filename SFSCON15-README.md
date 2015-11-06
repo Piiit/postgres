@@ -44,12 +44,12 @@ as we have programmed it. -->
 
 We configure our system with:
     
-		./configure --prefix=~/projects/postgresql-sfscon/server \
+		./configure --prefix=/home/pemoser/projects/postgresql-sfscon/server \
 		--enable-debug --enable-depend --enable-cassert
 
 The server binaries will be installed to 
 
-		~/projects/postgresql-sfscon/server
+		/home/pemoser/projects/postgresql-sfscon/server
 
 If we cannot run this command, we must check if all needed packages have been 
 installed. On Linux these are mostly the tools that are listed above, and some 
@@ -74,18 +74,18 @@ Run `make` and then `make install`.
 
 ## Start the server & client to check if it runs
 
-The current directory is: `~/projects/postgresql-sfscon/`.
+The current directory is: `/home/pemoser/projects/postgresql-sfscon/`.
 
 First of all, we create a database cluster with the following command:
 
-		./server/bin/initdb -D ~/projects/postgresql-sfscon/data
+		./server/bin/initdb -D /home/pemoser/projects/postgresql-sfscon/data
 
 Second, we must start the server:
 
-		./server/bin/pg_ctl -D ~/projects/postgresql-sfscon/data \
+		./server/bin/pg_ctl -D /home/pemoser/projects/postgresql-sfscon/data \
 		-l logfile start -o "-p 5555"
     
-This command starts the server with the cluster stored in `~/projects/postgresql-sfscon/data`, a logfile
+This command starts the server with the cluster stored in `/home/pemoser/projects/postgresql-sfscon/data`, a logfile
 stored in the current directory, and with a server port set to `5555` (since we 
 do not want to interfer with already running instances of PostgreSQL).
 
