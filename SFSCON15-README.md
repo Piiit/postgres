@@ -42,6 +42,11 @@ not want any optimization. This makes the debugging easier later on, because the
 compiler does not change the execution of our code. We want to step through it
 as we have programmed it. -->
 
+NB: I use my own home folder throughout this tutorial, since it has been started as 
+my personal notes for the workshop, not ment to be shared. So, please replace 
+`/home/pemoser` with your folder (some commands need absolute paths, so no `~` 
+allowed there)
+
 We configure our system with:
     
 		./configure --prefix=/home/pemoser/projects/postgresql-sfscon/server \
