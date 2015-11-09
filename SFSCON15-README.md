@@ -1135,6 +1135,10 @@ You should
 * delete your data folder in order to see if `initdb` still works
 * and setup a clean instance of **PostgreSQL** with **TWICE** support ;-)
 
+NB: If you still get some `WARNING:  could not dump unrecognized node type: NNN` 
+log messages, you probably forget some `pprint` somewhere. Remove them, and your 
+safe! :-)
+
 ----
 ## We`re done!!
 
