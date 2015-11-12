@@ -210,8 +210,8 @@ This is the list of all key words in alphabetical order. We add `TWICE` here.
 
 		reserved_keyword:
 			...
+			| TRUE_P
 			| TWICE
-			| TYPE_P
 			...
 		
 NB: A good german book if you wanna dive deeper into parser and lexer topics is 
