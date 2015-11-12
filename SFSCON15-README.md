@@ -646,9 +646,8 @@ Whereas, `nodeTwice.c` looks like this:
 			twicestate->ps.ps_ProjInfo = NULL;
 
 			/*
-			 * Set output counter for each tuple to zero, s.t. we know that it 
-			 * is the first output overall.
-			 */
+     			 * We have not started yet, hence it is the first time we will see tuple #1.
+     			 */
 			twicestate->isFirst = true;
 
 			return twicestate;
