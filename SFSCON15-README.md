@@ -171,6 +171,8 @@ twice clause afterwards:
 
 		SELECT opt_all_clause opt_twice_clause opt_target_list ...
     
+*Please note: The following line was missing during the workshop at SFSCON15. I skipped it accidentally.*
+
 Additional we must change the production rule to handle twice clauses:
 
 		n->twice = $3;
