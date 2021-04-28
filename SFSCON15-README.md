@@ -3,7 +3,7 @@ SFSCON: POSTGRESQL DEVELOPMENT TALK
 ===================================
 
 * Author: *Peter Moser*
-* Contact: [peter.moser@unibz.it](mailto:peter.moser@unibz.it)
+* Contact: [pitiz29a@gmail.com](mailto:pitiz29a@gmail.com)
 * Last modified: 2015-10-26
 * License: [CC-BY-SA](http://creativecommons.org/licenses/by-sa/4.0/)
 
