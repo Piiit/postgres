@@ -1389,6 +1389,9 @@ ExplainNode(PlanState *planstate, List *ancestors,
 		case T_Limit:
 			pname = sname = "Limit";
 			break;
+		case T_Twice:
+			pname = sname = "Twice";
+			break;
 		case T_Hash:
 			pname = sname = "Hash";
 			break;

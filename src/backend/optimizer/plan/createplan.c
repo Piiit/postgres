@@ -119,6 +119,7 @@ static LockRows *create_lockrows_plan(PlannerInfo *root, LockRowsPath *best_path
 static ModifyTable *create_modifytable_plan(PlannerInfo *root, ModifyTablePath *best_path);
 static Limit *create_limit_plan(PlannerInfo *root, LimitPath *best_path,
 								int flags);
+static Twice *create_twice_plan(PlannerInfo *root, TwicePath *best_path);
 static SeqScan *create_seqscan_plan(PlannerInfo *root, Path *best_path,
 									List *tlist, List *scan_clauses);
 static SampleScan *create_samplescan_plan(PlannerInfo *root, Path *best_path,
@@ -292,6 +293,7 @@ static WindowAgg *make_windowagg(List *tlist, Index winref,
 static Group *make_group(List *tlist, List *qual, int numGroupCols,
 						 AttrNumber *grpColIdx, Oid *grpOperators, Oid *grpCollations,
 						 Plan *lefttree);
+static Twice *make_twice(Plan *lefttree);
 static Unique *make_unique_from_sortclauses(Plan *lefttree, List *distinctList);
 static Unique *make_unique_from_pathkeys(Plan *lefttree,
 										 List *pathkeys, int numCols);
@@ -533,6 +535,10 @@ create_plan_recurse(PlannerInfo *root, Path *best_path, int flags)
 			plan = (Plan *) create_limit_plan(root,
 											  (LimitPath *) best_path,
 											  flags);
+			break;
+		case T_Twice:
+			plan = (Plan *) create_twice_plan(root,
+											  (TwicePath *) best_path);
 			break;
 		case T_GatherMerge:
 			plan = (Plan *) create_gather_merge_plan(root,
@@ -2815,6 +2821,28 @@ create_limit_plan(PlannerInfo *root, LimitPath *best_path, int flags)
 	return plan;
 }
 
+
+/*
+ * create_twice_plan
+ *
+ *	  Create a Twice plan for 'best_path' and (recursively) plans
+ *	  for its subpaths.
+ */
+static Twice *
+create_twice_plan(PlannerInfo *root, TwicePath *best_path)
+{
+	Twice	   *plan;
+	Plan	   *subplan;
+
+	/* Twice doesn't project, so tlist requirements pass through */
+	subplan = create_plan_recurse(root, best_path->subpath, CP_EXACT_TLIST);
+
+	plan = make_twice(subplan);
+
+	copy_generic_path_info(&plan->plan, (Path *) best_path);
+
+	return plan;
+}
 
 /*****************************************************************************
  *
@@ -6529,6 +6557,29 @@ make_group(List *tlist,
 
 	plan->qual = qual;
 	plan->targetlist = tlist;
+	plan->lefttree = lefttree;
+	plan->righttree = NULL;
+
+	return node;
+}
+
+Twice *
+make_twice(Plan *lefttree)
+{
+	Twice	   *node = makeNode(Twice);
+	Plan	   *plan = &node->plan;
+
+	copy_plan_costsize(plan, lefttree);
+
+	/*
+	 * Charge a cpu_tuple_cost for every tuple on input, multiplied with 2,
+	 * since we output every tuple twice.
+	 */
+	plan->plan_rows *= 2;
+	plan->total_cost += cpu_tuple_cost * plan->plan_rows;
+
+	plan->targetlist = lefttree->targetlist;
+	plan->qual = NIL;
 	plan->lefttree = lefttree;
 	plan->righttree = NULL;
 

@@ -1130,8 +1130,18 @@ exec_simple_query(const char *query_string)
 		querytree_list = pg_analyze_and_rewrite(parsetree, query_string,
 												NULL, 0, NULL);
 
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> QUERYTREE START\n\n");
+		pprint(querytree_list);
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> QUERYTREE END\n\n");												
+
 		plantree_list = pg_plan_queries(querytree_list, query_string,
 										CURSOR_OPT_PARALLEL_OK, NULL);
+
+		// TWICE_PATH: output to show what we've created inside the planner
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PLANTREE START\n\n");
+		pprint(plantree_list);
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> PLANTREE END\n\n");
+		fflush(stdout);
 
 		/*
 		 * Done with the snapshot used for parsing/planning.

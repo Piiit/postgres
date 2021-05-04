@@ -1705,6 +1705,11 @@ grouping_planner(PlannerInfo *root, double tuple_fraction)
 											  offset_est, count_est);
 		}
 
+		if (parse->twice)
+		{
+			path = (Path *) create_twice_path(root, final_rel, path);
+		}
+
 		/*
 		 * If this is an INSERT/UPDATE/DELETE, add the ModifyTable node.
 		 */

@@ -134,6 +134,13 @@ typedef struct SelectLimit
 	LimitOption limitOption;
 } SelectLimit;
 
+/* Private struct for the result of opt_select_limit production */
+typedef struct SelectTwice
+{
+	bool twice;
+} SelectTwice;
+
+
 /* Private struct for the result of group_clause production */
 typedef struct GroupClause
 {

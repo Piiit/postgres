@@ -1897,6 +1897,11 @@ typedef struct LimitPath
 	LimitOption limitOption;	/* FETCH FIRST with ties or exact number */
 } LimitPath;
 
+typedef struct TwicePath
+{
+	Path		path;
+	Path	   *subpath;		/* path representing input source */
+} TwicePath;
 
 /*
  * Restriction clause info.

@@ -87,6 +87,7 @@ typedef enum NodeTag
 	T_SetOp,
 	T_LockRows,
 	T_Limit,
+	T_Twice,
 	/* these aren't subclasses of Plan: */
 	T_NestLoopParam,
 	T_PlanRowMark,
@@ -263,6 +264,7 @@ typedef enum NodeTag
 	T_LockRowsPath,
 	T_ModifyTablePath,
 	T_LimitPath,
+	T_TwicePath,
 	/* these aren't subclasses of Path: */
 	T_EquivalenceClass,
 	T_EquivalenceMember,

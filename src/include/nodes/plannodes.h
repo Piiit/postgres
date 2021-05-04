@@ -1029,6 +1029,11 @@ typedef struct Limit
 	Oid		   *uniqCollations; /* collations for equality comparisons */
 } Limit;
 
+// TWICE_PATCH
+typedef struct Twice
+{
+	Plan plan;
+} Twice;
 
 /*
  * RowMarkType -

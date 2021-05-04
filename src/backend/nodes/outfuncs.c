@@ -964,6 +964,14 @@ _outLimit(StringInfo str, const Limit *node)
 }
 
 static void
+_outTwice(StringInfo str, const Twice *node)
+{
+	WRITE_NODE_TYPE("TWICE");
+
+	_outPlanInfo(str, (const Plan *) node);
+}
+
+static void
 _outNestLoopParam(StringInfo str, const NestLoopParam *node)
 {
 	WRITE_NODE_TYPE("NESTLOOPPARAM");
@@ -2198,6 +2206,16 @@ _outLimitPath(StringInfo str, const LimitPath *node)
 }
 
 static void
+_outTwicePath(StringInfo str, const TwicePath *node)
+{
+	WRITE_NODE_TYPE("TWICEPATH");
+
+	_outPathInfo(str, (const Path *) node);
+
+	WRITE_NODE_FIELD(subpath);
+}
+
+static void
 _outGatherMergePath(StringInfo str, const GatherMergePath *node)
 {
 	WRITE_NODE_TYPE("GATHERMERGEPATH");
@@ -2832,6 +2850,7 @@ _outSelectStmt(StringInfo str, const SelectStmt *node)
 	WRITE_NODE_FIELD(withClause);
 	WRITE_ENUM_FIELD(op, SetOperation);
 	WRITE_BOOL_FIELD(all);
+	WRITE_BOOL_FIELD(twice);
 	WRITE_NODE_FIELD(larg);
 	WRITE_NODE_FIELD(rarg);
 }
@@ -3056,6 +3075,7 @@ _outQuery(StringInfo str, const Query *node)
 	WRITE_BOOL_FIELD(hasModifyingCTE);
 	WRITE_BOOL_FIELD(hasForUpdate);
 	WRITE_BOOL_FIELD(hasRowSecurity);
+	WRITE_BOOL_FIELD(twice);
 	WRITE_BOOL_FIELD(isReturn);
 	WRITE_NODE_FIELD(cteList);
 	WRITE_NODE_FIELD(rtable);
@@ -3972,6 +3992,9 @@ outNode(StringInfo str, const void *obj)
 			case T_Limit:
 				_outLimit(str, obj);
 				break;
+			case T_Twice:
+				_outTwice(str, obj);
+				break;
 			case T_NestLoopParam:
 				_outNestLoopParam(str, obj);
 				break;
@@ -4238,6 +4261,9 @@ outNode(StringInfo str, const void *obj)
 				break;
 			case T_LimitPath:
 				_outLimitPath(str, obj);
+				break;
+			case T_TwicePath:
+				_outTwicePath(str, obj);
 				break;
 			case T_GatherMergePath:
 				_outGatherMergePath(str, obj);

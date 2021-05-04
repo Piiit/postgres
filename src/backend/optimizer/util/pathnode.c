@@ -3742,6 +3742,31 @@ create_limit_path(PlannerInfo *root, RelOptInfo *rel,
 	return pathnode;
 }
 
+TwicePath *
+create_twice_path(PlannerInfo *root, RelOptInfo *rel,
+				  Path *subpath)
+{
+	TwicePath *pathnode = makeNode(TwicePath);
+
+	pathnode->path.pathtype = T_Twice;
+	pathnode->path.parent = rel;
+	/* Limit doesn't project, so use source path's pathtarget */
+	pathnode->path.pathtarget = subpath->pathtarget;
+	/* For now, assume we are above any joins, so no parameterization */
+	pathnode->path.param_info = NULL;
+	pathnode->path.parallel_aware = false;
+	pathnode->path.parallel_safe = rel->consider_parallel &&
+		subpath->parallel_safe;
+	pathnode->path.parallel_workers = subpath->parallel_workers;
+	pathnode->path.rows = subpath->rows;
+	pathnode->path.startup_cost = subpath->startup_cost;
+	pathnode->path.total_cost = subpath->total_cost;
+	pathnode->path.pathkeys = subpath->pathkeys;
+	pathnode->subpath = subpath;
+
+	return pathnode;
+}
+
 /*
  * adjust_limit_rows_costs
  *	  Adjust the size and cost estimates for a LimitPath node according to the
