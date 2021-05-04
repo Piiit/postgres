@@ -2444,6 +2444,13 @@ typedef struct UniqueState
 	ExprState  *eqfunction;		/* tuple equality qual */
 } UniqueState;
 
+// TWICE_PATCH
+typedef struct TwiceState
+{
+	PlanState ps;
+	bool isFirst;
+} TwiceState;
+
 /* ----------------
  * GatherState information
  *

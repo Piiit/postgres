@@ -147,6 +147,7 @@ typedef enum NodeTag
 	T_SetOpState,
 	T_LockRowsState,
 	T_LimitState,
+	T_TwiceState,
 
 	/*
 	 * TAGS FOR PRIMITIVE NODES (primnodes.h)
