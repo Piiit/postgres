@@ -601,6 +601,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 %type <ival>	opt_window_exclusion_clause
 %type <str>		opt_existing_window_name
 %type <boolean> opt_if_not_exists
+%type <boolean> opt_twice_clause
 %type <ival>	generated_when override_kind
 %type <partspec>	PartitionSpec OptPartitionSpec
 %type <partelem>	part_elem
@@ -712,7 +713,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 	TABLE TABLES TABLESAMPLE TABLESPACE TEMP TEMPLATE TEMPORARY TEXT_P THEN
 	TIES TIME TIMESTAMP TO TRAILING TRANSACTION TRANSFORM
 	TREAT TRIGGER TRIM TRUE_P
-	TRUNCATE TRUSTED TYPE_P TYPES_P
+	TRUNCATE TRUSTED TWICE TYPE_P TYPES_P
 
 	UESCAPE UNBOUNDED UNCOMMITTED UNENCRYPTED UNION UNIQUE UNKNOWN
 	UNLISTEN UNLOGGED UNTIL UPDATE USER USING
@@ -11451,19 +11452,20 @@ select_clause:
  * However, this is not checked by the grammar; parse analysis must check it.
  */
 simple_select:
-			SELECT opt_all_clause opt_target_list
+			SELECT opt_all_clause opt_twice_clause opt_target_list
 			into_clause from_clause where_clause
 			group_clause having_clause window_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
-					n->targetList = $3;
-					n->intoClause = $4;
-					n->fromClause = $5;
-					n->whereClause = $6;
-					n->groupClause = ($7)->list;
-					n->groupDistinct = ($7)->distinct;
-					n->havingClause = $8;
-					n->windowClause = $9;
+					n->twice = $3;
+					n->targetList = $4;
+					n->intoClause = $5;
+					n->fromClause = $6;
+					n->whereClause = $7;
+					n->groupClause = ($8)->list;
+					n->groupDistinct = ($8)->distinct;
+					n->havingClause = $9;
+					n->windowClause = $10;
 					$$ = (Node *)n;
 				}
 			| SELECT distinct_clause target_list
@@ -11732,6 +11734,11 @@ opt_all_clause:
 opt_distinct_clause:
 			distinct_clause							{ $$ = $1; }
 			| opt_all_clause						{ $$ = NIL; }
+		;
+
+opt_twice_clause:
+			TWICE									{ $$ = true; }
+			| /*EMPTY*/                             { $$ = false; }
 		;
 
 opt_sort_clause:
@@ -15964,6 +15971,7 @@ reserved_keyword:
 			| TO
 			| TRAILING
 			| TRUE_P
+			| TWICE
 			| UNION
 			| UNIQUE
 			| USER
@@ -16357,6 +16365,7 @@ bare_label_keyword:
 			| TRUE_P
 			| TRUNCATE
 			| TRUSTED
+			| TWICE
 			| TYPE_P
 			| TYPES_P
 			| UESCAPE

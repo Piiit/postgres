@@ -140,6 +140,9 @@ typedef struct Query
 	bool		hasForUpdate;	/* FOR [KEY] UPDATE/SHARE was specified */
 	bool		hasRowSecurity; /* rewriter has applied some RLS policy */
 
+	/* TWICE_PATCH: parser --> Do you want to have every result twice?  */
+	bool        twice;
+
 	bool		isReturn;		/* is a RETURN statement */
 
 	List	   *cteList;		/* WITH list (of CommonTableExpr's) */
@@ -1680,6 +1683,10 @@ typedef struct SelectStmt
 	 */
 	SetOperation op;			/* type of set op */
 	bool		all;			/* ALL specified? */
+
+	/* TWICE_PATCH: parser --> Do you want to have every result twice?  */
+	bool        twice;
+
 	struct SelectStmt *larg;	/* left child */
 	struct SelectStmt *rarg;	/* right child */
 	/* Eventually add fields for CORRESPONDING spec here */
